@@ -2,15 +2,16 @@
 
 Example to use cli args.
 
-##Steps:
+## Steps
 
 * Add following line to mix.exs
 ```elixir
 escript: [main_module: CliArgs],
 ```
-* Compile with
+* Compile and run
 ```bash
 mix escript.build
+./cli_args
 ```
 
 
