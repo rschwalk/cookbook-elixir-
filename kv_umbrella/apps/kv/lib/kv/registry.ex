@@ -4,7 +4,9 @@ defmodule KV.Registry do
   ## Client API
 
   @doc """
-  Starts the registry
+  Starts the registry with the given options.
+
+  `:name` is always required.
   """
   def start_link(opts) do
     server = Keyword.fetch!(opts, :name)
@@ -20,7 +22,9 @@ defmodule KV.Registry do
     case :ets.lookup(server, name) do
       [{^name, pid}] ->
         {:ok, pid}
-      [] -> :error
+
+      [] ->
+        :error
     end
   end
 
@@ -45,6 +49,7 @@ defmodule KV.Registry do
     case lookup(names, name) do
       {:ok, pid} ->
         {:reply, pid, {names, refs}}
+
       :error ->
         {:ok, pid} = DynamicSupervisor.start_child(KV.BucketSupervisor, KV.Bucket)
         ref = Process.monitor(pid)
